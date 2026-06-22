@@ -1,0 +1,27 @@
+[project]
+name = "ml-experiment-orchestrator"
+version = "0.1.0"
+description = "An autonomous agent that orchestrates the ML experimentation lifecycle."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+mlflow = ["mlflow>=2.0"]
+wandb = ["wandb>=0.16"]
+kubeflow = ["kfp>=2.0"]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
