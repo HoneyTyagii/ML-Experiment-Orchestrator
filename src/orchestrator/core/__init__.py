@@ -1,5 +1,6 @@
 """Core domain logic for the orchestrator."""
 
+from orchestrator.core.config import ConfigError, load_objective, objective_from_dict
 from orchestrator.core.models import (
     Experiment,
     ExperimentStatus,
@@ -11,6 +12,7 @@ from orchestrator.core.models import (
 )
 
 __all__ = [
+    "ConfigError",
     "Experiment",
     "ExperimentStatus",
     "Goal",
@@ -18,4 +20,6 @@ __all__ = [
     "HyperparameterType",
     "MetricValue",
     "Objective",
+    "load_objective",
+    "objective_from_dict",
 ]
