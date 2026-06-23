@@ -18,6 +18,7 @@ from orchestrator.core.models import (
     MetricValue,
     Objective,
 )
+from orchestrator.core.search import GridSearch, RandomSearch
 from orchestrator.core.strategy import (
     ExperimentStrategy,
     StrategyError,
@@ -32,11 +33,13 @@ __all__ = [
     "ExperimentStatus",
     "ExperimentStrategy",
     "Goal",
+    "GridSearch",
     "HyperparameterSpec",
     "HyperparameterType",
     "IntakeError",
     "MetricValue",
     "Objective",
+    "RandomSearch",
     "Severity",
     "StrategyError",
     "ValidationIssue",
