@@ -29,6 +29,15 @@ from orchestrator.core.models import (
     MetricValue,
     Objective,
 )
+from orchestrator.core.monitor import (
+    BestMetricTracker,
+    CallbackListener,
+    MetricEvent,
+    MetricHistory,
+    MetricListener,
+    MetricMonitor,
+    MonitorError,
+)
 from orchestrator.core.search import GridSearch, RandomSearch
 from orchestrator.core.strategy import (
     ExperimentStrategy,
@@ -50,7 +59,12 @@ __all__ = [
     "IntakeError",
     "LauncherError",
     "LocalLauncher",
+    "MetricEvent",
+    "MetricHistory",
+    "MetricListener",
+    "MetricMonitor",
     "MetricValue",
+    "MonitorError",
     "Objective",
     "RandomSearch",
     "Severity",
@@ -61,6 +75,8 @@ __all__ = [
     "TrainingResult",
     "ValidationIssue",
     "ValidationReport",
+    "BestMetricTracker",
+    "CallbackListener",
     "apply_result",
     "available_launchers",
     "available_strategies",
