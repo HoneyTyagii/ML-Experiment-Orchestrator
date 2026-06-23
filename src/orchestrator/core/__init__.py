@@ -18,11 +18,19 @@ from orchestrator.core.models import (
     MetricValue,
     Objective,
 )
+from orchestrator.core.strategy import (
+    ExperimentStrategy,
+    StrategyError,
+    available_strategies,
+    get_strategy,
+    register_strategy,
+)
 
 __all__ = [
     "ConfigError",
     "Experiment",
     "ExperimentStatus",
+    "ExperimentStrategy",
     "Goal",
     "HyperparameterSpec",
     "HyperparameterType",
@@ -30,10 +38,14 @@ __all__ = [
     "MetricValue",
     "Objective",
     "Severity",
+    "StrategyError",
     "ValidationIssue",
     "ValidationReport",
+    "available_strategies",
+    "get_strategy",
     "intake_objective",
     "load_objective",
     "objective_from_dict",
+    "register_strategy",
     "validate_objective",
 ]
