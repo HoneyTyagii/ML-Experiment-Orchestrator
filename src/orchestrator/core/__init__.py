@@ -11,7 +11,6 @@ from orchestrator.core.intake import (
 )
 from orchestrator.core.launcher import (
     LauncherError,
-    LocalLauncher,
     TrainingJob,
     TrainingLauncher,
     TrainingResult,
@@ -20,6 +19,7 @@ from orchestrator.core.launcher import (
     get_launcher,
     register_launcher,
 )
+from orchestrator.core.local_backend import LocalLauncher, TrainContext
 from orchestrator.core.models import (
     Experiment,
     ExperimentStatus,
@@ -55,6 +55,7 @@ __all__ = [
     "RandomSearch",
     "Severity",
     "StrategyError",
+    "TrainContext",
     "TrainingJob",
     "TrainingLauncher",
     "TrainingResult",

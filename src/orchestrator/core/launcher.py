@@ -15,9 +15,10 @@ small lifecycle that fits both:
 synchronous callers, and :func:`apply_result` writes a result back onto the
 originating experiment.
 
-This module ships only the interface, a registry, and an in-process
-:class:`LocalLauncher` reference implementation. Remote backends register
-themselves under :mod:`orchestrator.integrations`.
+This module ships only the interface, the :class:`TrainingJob` / :class:`TrainingResult`
+value types, and a registry. Concrete backends -- the local backend in
+:mod:`orchestrator.core.local_backend`, and remote backends under
+:mod:`orchestrator.integrations` -- register themselves against it.
 """
 
 from __future__ import annotations
@@ -164,87 +165,6 @@ def apply_result(experiment: Experiment, result: TrainingResult) -> Experiment:
     return experiment
 
 
-class LocalLauncher(TrainingLauncher):
-    """Run training synchronously in the current process.
-
-    A dependency-free reference backend: it simply calls a user-supplied
-    ``train_fn(experiment) -> {metric: value}``. Because execution is
-    synchronous, jobs are already terminal by the time :meth:`launch` returns;
-    :meth:`poll` and :meth:`result` read back the stored outcome.
-
-    Parameters
-    ----------
-    train_fn:
-        Callable that performs training and returns a mapping of metric names to
-        numeric values.
-    reraise:
-        When ``True``, exceptions from ``train_fn`` propagate after the job is
-        marked ``FAILED``. When ``False`` (default), the failure is captured in
-        the :class:`TrainingResult`.
-    """
-
-    name: ClassVar[str] = "local"
-
-    def __init__(self, train_fn: TrainFn, *, reraise: bool = False) -> None:
-        self._train_fn = train_fn
-        self._reraise = reraise
-        self._results: dict[str, TrainingResult] = {}
-
-    def launch(self, experiment: Experiment) -> TrainingJob:
-        job = TrainingJob(
-            experiment_id=experiment.id,
-            backend=self.name,
-            status=ExperimentStatus.RUNNING,
-            started_at=_utcnow(),
-        )
-        try:
-            raw = self._train_fn(experiment)
-            metrics = [MetricValue(name=str(k), value=float(v)) for k, v in raw.items()]
-            result = TrainingResult(
-                experiment_id=experiment.id,
-                status=ExperimentStatus.COMPLETED,
-                metrics=metrics,
-            )
-            job.status = ExperimentStatus.COMPLETED
-        except Exception as exc:  # noqa: BLE001 - captured into the result
-            result = TrainingResult(
-                experiment_id=experiment.id,
-                status=ExperimentStatus.FAILED,
-                error=repr(exc),
-            )
-            job.status = ExperimentStatus.FAILED
-            job.finished_at = _utcnow()
-            self._results[job.id] = result
-            if self._reraise:
-                raise
-            return job
-
-        job.finished_at = _utcnow()
-        self._results[job.id] = result
-        return job
-
-    def poll(self, job: TrainingJob) -> ExperimentStatus:
-        stored = self._results.get(job.id)
-        return stored.status if stored is not None else job.status
-
-    def result(self, job: TrainingJob) -> TrainingResult:
-        try:
-            return self._results[job.id]
-        except KeyError:
-            raise LauncherError(f"no result recorded for job {job.id}") from None
-
-    def cancel(self, job: TrainingJob) -> None:
-        # Synchronous jobs are already terminal; cancellation is a no-op unless
-        # the job somehow never ran.
-        if not job.is_terminal:
-            job.status = ExperimentStatus.CANCELLED
-            job.finished_at = _utcnow()
-            self._results[job.id] = TrainingResult(
-                experiment_id=job.experiment_id,
-                status=ExperimentStatus.CANCELLED,
-            )
-
-
 _REGISTRY: dict[str, type[TrainingLauncher]] = {}
 
 
@@ -273,6 +193,3 @@ def get_launcher(name: str, **kwargs: Any) -> TrainingLauncher:
 def available_launchers() -> list[str]:
     """Return the sorted names of all registered launchers."""
     return sorted(_REGISTRY)
-
-
-register_launcher(LocalLauncher)
