@@ -20,6 +20,7 @@ from orchestrator.core.launcher import (
     register_launcher,
 )
 from orchestrator.core.local_backend import LocalLauncher, TrainContext
+from orchestrator.core.loop import TuningLoop, TuningResult, run_local
 from orchestrator.core.models import (
     Experiment,
     ExperimentStatus,
@@ -99,6 +100,8 @@ __all__ = [
     "StopReason",
     "StoppingPolicy",
     "TargetThresholdPolicy",
+    "TuningLoop",
+    "TuningResult",
     "apply_result",
     "available_launchers",
     "available_strategies",
@@ -109,5 +112,6 @@ __all__ = [
     "objective_from_dict",
     "register_launcher",
     "register_strategy",
+    "run_local",
     "validate_objective",
 ]
