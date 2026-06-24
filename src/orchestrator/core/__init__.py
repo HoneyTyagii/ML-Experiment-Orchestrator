@@ -39,6 +39,18 @@ from orchestrator.core.monitor import (
     MonitorError,
 )
 from orchestrator.core.search import GridSearch, RandomSearch
+from orchestrator.core.stopping import (
+    DivergencePolicy,
+    EarlyStopper,
+    EarlyStoppingListener,
+    FloorThresholdPolicy,
+    MaxStepsPolicy,
+    PatiencePolicy,
+    StopDecision,
+    StoppingPolicy,
+    StopReason,
+    TargetThresholdPolicy,
+)
 from orchestrator.core.strategy import (
     ExperimentStrategy,
     StrategyError,
@@ -77,6 +89,16 @@ __all__ = [
     "ValidationReport",
     "BestMetricTracker",
     "CallbackListener",
+    "DivergencePolicy",
+    "EarlyStopper",
+    "EarlyStoppingListener",
+    "FloorThresholdPolicy",
+    "MaxStepsPolicy",
+    "PatiencePolicy",
+    "StopDecision",
+    "StopReason",
+    "StoppingPolicy",
+    "TargetThresholdPolicy",
     "apply_result",
     "available_launchers",
     "available_strategies",
