@@ -49,6 +49,12 @@ from orchestrator.core.ranking import (
     rank_result,
     score_experiment,
 )
+from orchestrator.core.report import (
+    Report,
+    build_report,
+    generate_report,
+    write_report,
+)
 from orchestrator.core.search import GridSearch, RandomSearch
 from orchestrator.core.stopping import (
     DivergencePolicy,
@@ -94,6 +100,7 @@ __all__ = [
     "RandomSearch",
     "RankedExperiment",
     "RankingSummary",
+    "Report",
     "Severity",
     "StrategyError",
     "TrainContext",
@@ -119,7 +126,9 @@ __all__ = [
     "apply_result",
     "available_launchers",
     "available_strategies",
+    "build_report",
     "compare_experiments",
+    "generate_report",
     "get_launcher",
     "get_strategy",
     "intake_objective",
@@ -132,4 +141,5 @@ __all__ = [
     "run_local",
     "score_experiment",
     "validate_objective",
+    "write_report",
 ]
