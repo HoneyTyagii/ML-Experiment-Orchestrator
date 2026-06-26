@@ -11,12 +11,22 @@ from orchestrator.integrations.mlflow import (
     MlflowError,
     MlflowListener,
     MlflowTracker,
-    track_result,
 )
+from orchestrator.integrations.mlflow import track_result as track_result_mlflow
+from orchestrator.integrations.wandb import (
+    WandbError,
+    WandbListener,
+    WandbTracker,
+)
+from orchestrator.integrations.wandb import track_result as track_result_wandb
 
 __all__ = [
     "MlflowError",
     "MlflowListener",
     "MlflowTracker",
-    "track_result",
+    "WandbError",
+    "WandbListener",
+    "WandbTracker",
+    "track_result_mlflow",
+    "track_result_wandb",
 ]
