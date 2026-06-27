@@ -7,6 +7,7 @@ operation actually needs it, at which point a clear error is raised if it's
 missing.
 """
 
+from orchestrator.integrations.kubeflow import KubeflowError, KubeflowLauncher
 from orchestrator.integrations.mlflow import (
     MlflowError,
     MlflowListener,
@@ -21,6 +22,8 @@ from orchestrator.integrations.wandb import (
 from orchestrator.integrations.wandb import track_result as track_result_wandb
 
 __all__ = [
+    "KubeflowError",
+    "KubeflowLauncher",
     "MlflowError",
     "MlflowListener",
     "MlflowTracker",
