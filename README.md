@@ -41,6 +41,42 @@ Deploy best model
 - **Weights & Biases** — metric logging and visualization
 - **Kubeflow** — distributed training orchestration
 
+All integrations are optional extras; the core has no third-party runtime
+dependencies beyond `pydantic` and `pyyaml`.
+
+## Quickstart
+
+```python
+from orchestrator.core import run_pipeline
+
+def train(experiment):
+    hp = experiment.hyperparameters
+    # ... train a model with these hyperparameters ...
+    return {"val_accuracy": 0.91, "loss": 0.2}
+
+result = run_pipeline("examples/objectives/tune_resnet.yaml", train, strategy="random")
+
+print(result.report.to_markdown())
+print("best:", result.best_value, "->", result.best_experiment.hyperparameters)
+```
+
+## Documentation
+
+- **[Usage guide](docs/usage.md)** — install, objectives, training functions, the
+  pipeline, each stage à la carte, strategies, early stopping, reports,
+  deployment, and integrations.
+- **[Architecture](docs/architecture.md)** — the eight-stage lifecycle, module
+  map, and design principles (registries, launcher lifecycle, the feedback loop,
+  optional dependencies).
+
 ## Status
 
-Early scaffold. See the project board for progress.
+Stages 1–8 implemented (intake → generate → launch → monitor → adjust → compare
+→ report → deploy), with MLflow, Weights & Biases, and Kubeflow integrations and
+a unit-test suite. Install dev extras and run the tests with:
+
+```bash
+pip install -e ".[dev]"
+pytest
+```
+
