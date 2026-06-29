@@ -1,6 +1,18 @@
 """Core domain logic for the orchestrator."""
 
 from orchestrator.core.config import ConfigError, load_objective, objective_from_dict
+from orchestrator.core.deployment import (
+    Deployment,
+    DeploymentError,
+    DeploymentStatus,
+    DeploymentTarget,
+    LocalDeploymentTarget,
+    available_targets,
+    deploy_best,
+    get_target,
+    register_target,
+    select_best,
+)
 from orchestrator.core.intake import (
     IntakeError,
     Severity,
@@ -39,6 +51,7 @@ from orchestrator.core.monitor import (
     MetricMonitor,
     MonitorError,
 )
+from orchestrator.core.pipeline import Orchestrator, PipelineResult, run_pipeline
 from orchestrator.core.ranking import (
     Leaderboard,
     MetricKey,
@@ -78,6 +91,10 @@ from orchestrator.core.strategy import (
 
 __all__ = [
     "ConfigError",
+    "Deployment",
+    "DeploymentError",
+    "DeploymentStatus",
+    "DeploymentTarget",
     "Experiment",
     "ExperimentStatus",
     "ExperimentStrategy",
@@ -88,6 +105,7 @@ __all__ = [
     "IntakeError",
     "LauncherError",
     "Leaderboard",
+    "LocalDeploymentTarget",
     "LocalLauncher",
     "MetricEvent",
     "MetricHistory",
@@ -97,6 +115,8 @@ __all__ = [
     "MetricValue",
     "MonitorError",
     "Objective",
+    "Orchestrator",
+    "PipelineResult",
     "RandomSearch",
     "RankedExperiment",
     "RankingSummary",
@@ -126,11 +146,14 @@ __all__ = [
     "apply_result",
     "available_launchers",
     "available_strategies",
+    "available_targets",
     "build_report",
     "compare_experiments",
+    "deploy_best",
     "generate_report",
     "get_launcher",
     "get_strategy",
+    "get_target",
     "intake_objective",
     "load_objective",
     "objective_from_dict",
@@ -138,8 +161,11 @@ __all__ = [
     "rank_result",
     "register_launcher",
     "register_strategy",
+    "register_target",
     "run_local",
+    "run_pipeline",
     "score_experiment",
+    "select_best",
     "validate_objective",
     "write_report",
 ]
